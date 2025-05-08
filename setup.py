@@ -5,8 +5,8 @@ setup(
     version="0.1.0",
     packages=find_packages(),
     install_requires=[
-        # List dependencies here
-        # e.g., "requests>=2.25.1",
+        "pygame~=2.6.1",
+        "setuptools~=80.3.1",
     ],
     author="Kiss Máté",
     author_email="kiss.mate.4@stud.u-szeged.hu",
