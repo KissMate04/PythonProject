@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="PythonProject",
     version="0.1.0",
-    packages=find_packages(),
+    packages=find_packages(include=["pythonproject", "pythonproject.*"]),
     install_requires=[
         "pygame~=2.6.1",
         "setuptools~=80.3.1",
