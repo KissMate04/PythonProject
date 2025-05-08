@@ -1,6 +1,6 @@
 import pygame
 import ship
-from game import enemies
+import game
 
 class Enemy(ship.Ship):
     def __init__(self, screen, image, max_health, base_damage, speed, x, y):
@@ -28,7 +28,9 @@ class Enemy(ship.Ship):
 
     def death(self):
         print("enemy has died.")
-        enemies.remove(self)
+        game.score += 20
+        game.enemies.remove(self)
+        print("score: ", game.score)
 
     def promotion(self):
         self.shipsize += 16

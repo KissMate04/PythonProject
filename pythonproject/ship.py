@@ -29,7 +29,7 @@ class Ship:
         self.screen.blit(self.image, (self.x, self.y))
 
     def hit(self,damage_taken):
-        self.health -= damage_taken
+        self.health -= round(damage_taken)
         if self.health <= 0:
             self.death()
 

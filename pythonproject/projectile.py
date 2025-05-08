@@ -10,7 +10,7 @@ class Projectile:
         self.size = size
         self.speed = speed
         self.damage = damage
-        self.hitbox = pygame.Rect(self.x, self.y-self.size*1.5, self.size/4, self.size)
+        self.hitbox = pygame.Rect(self.x, self.y-self.size*1.5, min(self.size/4, 15), min(self.size, 40))
         self.shooter = shooter
 
     def move(self):
@@ -18,7 +18,7 @@ class Projectile:
             self.y -= self.speed
         else:
             self.y += self.speed
-        self.hitbox = pygame.Rect(self.x, self.y-self.size*1.5, self.size/4, self.size)
+        self.hitbox = pygame.Rect(self.x, self.y-self.size*1.5, min(self.size/4,15), min(self.size, 40))
 
     def draw(self, screen):
         if self.shooter == "player":

@@ -5,19 +5,31 @@ import enemy
 import game
 
 pygame.init()
+pygame.font.init()
 
 screen = pygame.display.set_mode((600, 800), pygame.SCALED)
 player = player.Player(screen, 'sprites\\startership.png', 100, 60, 4, screen.get_width() / 2 - 16, screen.get_height() - screen.get_height() / 4, 0)
 running = True
 
 ENEMY_SHOOT = pygame.USEREVENT
+font = pygame.font.SysFont('Futura', 20)
 pygame.time.set_timer(ENEMY_SHOOT, 1000)
-
-
 
 clock = pygame.time.Clock()
 delta_time = 0.8
 
+def info(max_health, health, level, score):
+    health_text = font.render(f"Health: {str(health)}/{str(max_health)}", True, (255, 255, 255))
+    score_text = font.render(f"Score: {str(score)}", True, (255, 255, 255))
+    level_text = ""
+    if level == "level1":
+        level_text = font.render("Level 1", True, (255, 255, 255))
+    elif level == "level2":
+        level_text = font.render("Level 2", True, (255, 255, 255))
+    screen.blit(health_text, (10, 10))
+    screen.blit(score_text, (screen.get_width()-10-score_text.get_width(), 10))
+    if level_text != "":
+        screen.blit(level_text, (screen.get_width()/2 - level_text.get_width()/2, 10))
 
 
 def level1():
@@ -25,27 +37,27 @@ def level1():
     if not game.enemies:
         game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() / 2, 100))
         game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() / 2, 300))
-    if player.score == 20:
+    if game.score >= 100:
         game.enemies.clear()
         game.projectiles.clear()
         game.level = "level2"
 
 def level2():
-    if not enemy.enemies:
-        enemy.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() - 50, 100))
-        enemy.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() - 50, 300))
-        enemy.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() / 2, 300))
-        enemy.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, 50, 300))
-        enemy.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, 50, 100))
-        enemy.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() / 2, 100))
-    if player.score == 100:
+    if not game.enemies:
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() - 50, 100))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() - 50, 300))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() / 2, 300))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, 50, 300))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, 50, 100))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() / 2, 100))
+    if game.score >= 500:
         print("You win!")
         game.game_over()
 
 
 while running:
     screen.fill((0,0,0))
-
+    info(player.max_health, player.health, game.level, game.score)
     for event in pygame.event.get():
         if event.type == pygame.MOUSEWHEEL:
             player.resize(event.y)
@@ -55,7 +67,7 @@ while running:
             game.projectiles.append(
                 projectile.Projectile(player.x + player.shipsize / 2, player.y, player.shipsize / 2, player.speed, player.damage, "player"))
         if event.type == ENEMY_SHOOT:
-            for en in enemy.enemies:
+            for en in game.enemies:
                 game.projectiles.append(
                     projectile.Projectile(en.x + en.shipsize / 2, en.y + en.shipsize, en.shipsize / 2, en.speed, en.damage, en))
                 #if len(projectiles) > 10:
@@ -70,10 +82,10 @@ while running:
         proj.draw(screen)
 
         if proj.shooter == "player":
-            for en in enemy.enemies[:]:
+            for en in game.enemies[:]:
                 if proj.hitbox.colliderect(en.hitbox):
                     print("Player projectile hit an enemy with: ", proj.damage, " damage!")
-                    player.score += 5
+                    game.score += 5
                     en.hit(proj.damage)
                     if proj in game.projectiles:
                         game.projectiles.remove(proj)
@@ -93,7 +105,7 @@ while running:
 
     screen.blit(player.image, (player.x, player.y))
 
-    for en in enemy.enemies[:]:
+    for en in game.enemies[:]:
         en.move(keys, delta_time)
         screen.blit(en.image, (en.x, en.y))
 
