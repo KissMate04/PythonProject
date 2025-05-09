@@ -12,6 +12,11 @@ setup(
         "pygame~=2.6.1",
         "setuptools~=80.3.1",
     ],
+    entry_points={
+        "console_scripts": [
+            "pythonproject=pythonproject.main:main",
+        ],
+    },
     author="Kiss Máté",
     author_email="kiss.mate.4@stud.u-szeged.hu",
     url="https://github.com/KissMate04/PythonProject",
