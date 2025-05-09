@@ -8,12 +8,12 @@ pygame.init()
 pygame.font.init()
 
 screen = pygame.display.set_mode((600, 800), pygame.SCALED)
-player = player.Player(screen, 'sprites\\startership.png', 100, 60, 4, screen.get_width() / 2 - 16, screen.get_height() - screen.get_height() / 4, 0)
+player = player.Player(screen, 'sprites\\startership.png', game.PLAYER_MAX_HEALTH, game.PLAYER_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() / 2 - 16, screen.get_height() - screen.get_height() / 4, 0)
 running = True
 
-ENEMY_SHOOT = pygame.USEREVENT
+
 font = pygame.font.SysFont('Futura', 20)
-pygame.time.set_timer(ENEMY_SHOOT, 1000)
+
 
 clock = pygame.time.Clock()
 delta_time = 0.8
@@ -33,10 +33,9 @@ def info(max_health, health, level, score):
 
 
 def level1():
-
     if not game.enemies:
-        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() / 2, 100))
-        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() / 2, 300))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() / 2, 100))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() / 2, 300))
     if game.score >= 100:
         game.enemies.clear()
         game.projectiles.clear()
@@ -44,12 +43,12 @@ def level1():
 
 def level2():
     if not game.enemies:
-        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() - 50, 100))
-        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() - 50, 300))
-        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() / 2, 300))
-        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, 50, 300))
-        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, 50, 100))
-        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', 100, 20, 4, screen.get_width() / 2, 100))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() - 50, 100))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() - 50, 300))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() / 2, 300))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE, game.PLAYER_SPEED, 50, 300))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE, game.PLAYER_SPEED, 50, 100))
+        game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() / 2, 100))
     if game.score >= 500:
         print("You win!")
         game.game_over()
@@ -65,11 +64,11 @@ while running:
             running = False
         if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
             game.projectiles.append(
-                projectile.Projectile(player.x + player.shipsize / 2, player.y, player.shipsize / 2, player.speed, player.damage, "player"))
-        if event.type == ENEMY_SHOOT:
+                projectile.Projectile(player.x + player.shipsize / 2, player.y, player.shipsize / 2, game.PROJECTILE_SPEED, player.damage, "player"))
+        if event.type == game.ENEMY_SHOOT:
             for en in game.enemies:
                 game.projectiles.append(
-                    projectile.Projectile(en.x + en.shipsize / 2, en.y + en.shipsize, en.shipsize / 2, en.speed, en.damage, en))
+                    projectile.Projectile(en.x + en.shipsize / 2, en.y + en.shipsize, en.shipsize / 2, game.PROJECTILE_SPEED, en.damage, en))
                 #if len(projectiles) > 10:
                  #   projectiles.pop(0)
 
