@@ -13,11 +13,12 @@ def main():
                       screen.get_height() - screen.get_height() / 4, 0)
 
     def reset():
-        global p
+        nonlocal p
         p = player.Player(screen, 'sprites\\startership.png', game.PLAYER_MAX_HEALTH, game.PLAYER_BASE_DAMAGE,
                           game.PLAYER_SPEED, screen.get_width() / 2 - 16,
                           screen.get_height() - screen.get_height() / 4, 0)
         game.level = "level1"
+        game.score = 0
 
     def menu():
         start_cont_btn = pygame.draw.rect(screen, (0,0,0), (screen.get_width()/2 - 100, screen.get_height()/3 - 50, 200, 100))
@@ -44,10 +45,6 @@ def main():
                 pygame.quit()
                 exit()
 
-        #on restart call main fuction
-        #if score > 0:
-        # display start else display continue but both are the same.
-        #set running to true
 
 
     def info(max_health, health, level, score):
@@ -163,7 +160,7 @@ def main():
             screen.blit(game_over_text, (screen.get_width() / 2 - game_over_text.get_width() / 2,
                                          screen.get_height() / 2 - game_over_text.get_height() / 2))
             pygame.display.flip()
-            pygame.time.delay(5000)
+            pygame.time.delay(2000)
             game.in_menu = True
             reset()
         if game.in_menu:
