@@ -14,7 +14,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "pythonproject=pythonproject.main:main",
+            "pythonproject=pythonproject.launcher:main",
         ],
     },
     author="Kiss Máté",
