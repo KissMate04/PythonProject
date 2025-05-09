@@ -12,13 +12,42 @@ def main():
                       game.PLAYER_SPEED, screen.get_width() / 2 - 16,
                       screen.get_height() - screen.get_height() / 4, 0)
 
+    def reset():
+        global p
+        p = player.Player(screen, 'sprites\\startership.png', game.PLAYER_MAX_HEALTH, game.PLAYER_BASE_DAMAGE,
+                          game.PLAYER_SPEED, screen.get_width() / 2 - 16,
+                          screen.get_height() - screen.get_height() / 4, 0)
+        game.level = "level1"
+
     def menu():
-        while game.level == "menu":
-            #on restart call main fuction
-            #if score > 0:
-            # display start else display continue but both are the same.
-            #set running to true
-            pass
+        start_cont_btn = pygame.draw.rect(screen, (0,0,0), (screen.get_width()/2 - 100, screen.get_height()/3 - 50, 200, 100))
+        if game.score == 0:
+            start_cont_text = menu_font.render("Start", True, (255, 255, 255))
+        else:
+            start_cont_text = menu_font.render("Continue", True, (255, 255, 255))
+        screen.blit(start_cont_text, (screen.get_width()/2 - start_cont_text.get_width()/2, screen.get_height()/3 - start_cont_text.get_height()/2))
+
+        quit_btn = pygame.draw.rect(screen, (0, 0, 0),(screen.get_width() / 2 - 100, screen.get_height() - screen.get_height() / 3 - 50, 200, 100))
+        quit_text = menu_font.render("Quit", True, (255, 255, 255))
+        screen.blit(quit_text,(screen.get_width() / 2 - quit_text.get_width() / 2, screen.get_height() - screen.get_height() / 3 - start_cont_text.get_height() / 2))
+
+        #Gombnyomás: https://www.youtube.com/watch?v=Y52JsDs4cMQ
+        if start_cont_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+            game.in_menu = False
+
+        if quit_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+            pygame.quit()
+            exit()
+
+        for ev in pygame.event.get():
+            if ev.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+        #on restart call main fuction
+        #if score > 0:
+        # display start else display continue but both are the same.
+        #set running to true
 
 
     def info(max_health, health, level, score):
@@ -71,28 +100,13 @@ def main():
             print("You win!")
             game.game_over()
 
-    menu()
-
-
-
-    running = True
-
-    font = pygame.font.SysFont('Futura', 20)
-    game_over_font = pygame.font.SysFont('Rocket', 50)
-
-    clock = pygame.time.Clock()
-    delta_time = 0.8
-
-
-
-    while running:
-        screen.fill((0, 0, 0))
+    def play():
         info(p.max_health, p.health, game.level, game.score)
         for event in pygame.event.get():
             if event.type == pygame.MOUSEWHEEL:
                 p.resize(event.y)
             if event.type == pygame.QUIT:
-                running = False
+                game.running = False
             if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or (
                     event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
                 p.shoot()
@@ -105,7 +119,7 @@ def main():
             pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
             p.move(keys, delta_time)
         if keys[pygame.K_ESCAPE]:
-            game.level = "menu"
+            game.in_menu = True
 
         for proj in game.projectiles[:]:
             proj.move()
@@ -145,21 +159,33 @@ def main():
         if game.level == "level2":
             level2()
         if game.level == "over":
-            print("i get here")
-            # screen.fill((0, 0, 0))
             game_over_text = game_over_font.render(f"Game Over", True, (255, 10, 10))
             screen.blit(game_over_text, (screen.get_width() / 2 - game_over_text.get_width() / 2,
                                          screen.get_height() / 2 - game_over_text.get_height() / 2))
             pygame.display.flip()
             pygame.time.delay(5000)
-            running = False
-            game.level = "menu"
-        if game.level == "menu":
+            game.in_menu = True
+            reset()
+        if game.in_menu:
             menu()
 
+
+    font = pygame.font.SysFont('Futura', 20)
+    game_over_font = pygame.font.SysFont('Rocket', 50)
+
+    clock = pygame.time.Clock()
+    delta_time = 0.8
+
+
+
+    while game.running:
+        screen.fill((0, 0, 0))
+        if game.in_menu:
+            menu()
+        else:
+            play()
         pygame.display.flip()
         clock.tick(60)
-
     pygame.quit()
 
 

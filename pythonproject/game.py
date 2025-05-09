@@ -20,8 +20,10 @@ PROJECTILE_SPEED = 4
 
 projectiles = []
 enemies = []
-level = "menu"
+level = "level1"
 score = 0
+running = True
+in_menu = True
 
 def game_over():
     enemies.clear()
