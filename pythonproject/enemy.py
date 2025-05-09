@@ -1,6 +1,7 @@
 import pygame
 import ship
 import game
+import projectile
 
 class Enemy(ship.Ship):
     def __init__(self, screen, image, max_health, base_damage, speed, x, y):
@@ -12,7 +13,7 @@ class Enemy(ship.Ship):
 
     def move(self, keys, delta_time):
         if self.dying:
-            if pygame.time.get_ticks() - self.time > 1.5:  # 500ms
+            if pygame.time.get_ticks() - self.time > 500:
                 game.enemies.remove(self)
             return
 
@@ -34,18 +35,26 @@ class Enemy(ship.Ship):
         super().move(keys, delta_time)
 
     def death(self):
+        if not self.dying:
+            self.image = pygame.image.load('sprites\\explosion.png').convert_alpha()
+            self.image = pygame.transform.scale(self.image, (self.shipsize, self.shipsize))
 
-        self.image = pygame.image.load('sprites\\explosion.png').convert_alpha()
-        self.image = pygame.transform.scale(self.image, (self.shipsize, self.shipsize))
-        print("enemy has died.")
-        game.score += 20
-        self.dying = True
-        self.time = pygame.time.get_ticks()
-        print("score: ", game.score)
+            print("enemy has died.")
+            game.score += 20
+            self.dying = True
+            self.time = pygame.time.get_ticks()
+            print("score: ", game.score)
 
     def promotion(self):
         self.shipsize += 16
         self.damage = self.base_damage * (self.shipsize / 100)
         self.image = pygame.transform.scale(self.image, (self.shipsize, self.shipsize))
         self.hitbox = pygame.Rect(self.x, self.y, self.image.get_width(), self.image.get_height())
+
+    def shoot(self):
+        if self.dying:
+            return
+        game.projectiles.append(
+            projectile.Projectile(self.x + self.shipsize / 2, self.y + self.shipsize, self.shipsize / 2, game.PROJECTILE_SPEED,
+                                  self.damage, self))
 

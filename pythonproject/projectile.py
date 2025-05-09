@@ -1,7 +1,5 @@
 import pygame
 
-from player import Player
-
 
 class Projectile:
     def __init__(self, x, y, size, speed, damage, shooter):
