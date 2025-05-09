@@ -7,8 +7,15 @@ class Enemy(ship.Ship):
         super().__init__(screen, image, max_health, base_damage, speed, x, y)
         self.xdirection = 1
         self.ydirection = 0
+        self.dying = False
+        self.time = 0
 
     def move(self, keys, delta_time):
+        if self.dying:
+            if pygame.time.get_ticks() - self.time > 1.5:  # 500ms
+                game.enemies.remove(self)
+            return
+
         self.x += self.speed * delta_time * self.xdirection
         self.y += self.speed * delta_time * self.ydirection
         if self.x >= self.screen.get_width() - self.image.get_width() - 50 and self.ydirection == 0:
@@ -27,9 +34,13 @@ class Enemy(ship.Ship):
         super().move(keys, delta_time)
 
     def death(self):
+
+        self.image = pygame.image.load('sprites\\explosion.png').convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.shipsize, self.shipsize))
         print("enemy has died.")
         game.score += 20
-        game.enemies.remove(self)
+        self.dying = True
+        self.time = pygame.time.get_ticks()
         print("score: ", game.score)
 
     def promotion(self):

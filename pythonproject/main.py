@@ -13,7 +13,8 @@ running = True
 
 
 font = pygame.font.SysFont('Futura', 20)
-
+game_over_font = pygame.font.SysFont('Rocket', 50)
+pygame.time.set_timer(ENEMY_SHOOT, 1000)
 
 clock = pygame.time.Clock()
 delta_time = 0.8
@@ -113,7 +114,10 @@ while running:
     if game.level == "level2":
         level2()
     while game.level == "over":
-        screen.fill((0, 0, 0))
+        print("i get here")
+        #screen.fill((0, 0, 0))
+        game_over_text = game_over_font.render(f"Game Over.\nScore: {game.score}", True, (255, 10, 10))
+        screen.blit(game_over_text, (screen.get_width()/2 - game_over_text.get_width()/2, screen.get_height()/2 - game_over_text.get_height()/2))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
