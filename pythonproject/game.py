@@ -16,6 +16,10 @@ ENEMY_SPEED = 4
 ENEMY_BASE_DAMAGE = 20
 #projectile
 PROJECTILE_SPEED = 4
+#score to progress
+LEVEL1_TARGET_SCORE = 100
+LEVEL2_TARGET_SCORE = 500
+LEVEL3_TARGET_SCORE = 800
 #End of settings
 
 projectiles = []

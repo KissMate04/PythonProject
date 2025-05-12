@@ -2,6 +2,8 @@ import pygame
 import player
 import enemy
 import game
+from pythonproject.game import LEVEL1_TARGET_SCORE
+
 
 def main():
     pygame.init()
@@ -55,6 +57,8 @@ def main():
             level_text = font.render("Level 1", True, (255, 255, 255))
         elif level == "level2":
             level_text = font.render("Level 2", True, (255, 255, 255))
+        elif level == "level3":
+            level_text = font.render("Level 3", True, (255, 255, 255))
         screen.blit(health_text, (10, 10))
         screen.blit(score_text, (screen.get_width() - 10 - score_text.get_width(), 10))
         if level_text != "":
@@ -64,11 +68,11 @@ def main():
         if not game.enemies:
             game.enemies.append(
                 enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
-                            game.PLAYER_SPEED, screen.get_width() / 2, 100))
+                            game.ENEMY_SPEED, screen.get_width() / 2, 100))
             game.enemies.append(
                 enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
-                            game.PLAYER_SPEED, screen.get_width() / 2, 300))
-        if game.score >= 100:
+                            game.ENEMY_SPEED, screen.get_width() / 2, 300))
+        if game.score >= game.LEVEL1_TARGET_SCORE:
             game.enemies.clear()
             game.projectiles.clear()
             game.level = "level2"
@@ -77,23 +81,34 @@ def main():
         if not game.enemies:
             game.enemies.append(
                 enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
-                            game.PLAYER_SPEED, screen.get_width() - 50, 100))
+                            game.ENEMY_SPEED, screen.get_width() - 50, 100))
             game.enemies.append(
                 enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
-                            game.PLAYER_SPEED, screen.get_width() - 50, 300))
+                            game.ENEMY_SPEED, screen.get_width() - 50, 300))
             game.enemies.append(
                 enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
-                            game.PLAYER_SPEED, screen.get_width() / 2, 300))
+                            game.ENEMY_SPEED, screen.get_width() / 2, 300))
             game.enemies.append(
                 enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
-                            game.PLAYER_SPEED, 50, 300))
+                            game.ENEMY_SPEED, 50, 300))
             game.enemies.append(
                 enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
-                            game.PLAYER_SPEED, 50, 100))
+                            game.ENEMY_SPEED, 50, 100))
             game.enemies.append(
                 enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
-                            game.PLAYER_SPEED, screen.get_width() / 2, 100))
-        if game.score >= 500:
+                            game.ENEMY_SPEED, screen.get_width() / 2, 100))
+        if game.score >= game.LEVEL2_TARGET_SCORE:
+            game.enemies.clear()
+            game.projectiles.clear()
+            game.level = "level3"
+
+    def level3():
+        if not game.enemies:
+            game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship2.png', game.ENEMY_MAX_HEALTH*2, game.ENEMY_BASE_DAMAGE*3,game.ENEMY_SPEED*1.25, screen.get_width() / 2, 100))
+            game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship2.png', game.ENEMY_MAX_HEALTH*2, game.ENEMY_BASE_DAMAGE*3,game.ENEMY_SPEED*1.25, screen.get_width() -50, 300))
+            game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship2.png', game.ENEMY_MAX_HEALTH*2, game.ENEMY_BASE_DAMAGE*3,game.ENEMY_SPEED*1.25, 50, 300))
+
+        if game.score >= game.LEVEL3_TARGET_SCORE:
             print("You win!")
             game.game_over()
 
@@ -155,6 +170,8 @@ def main():
             level1()
         if game.level == "level2":
             level2()
+        if game.level == "level3":
+            level3()
         if game.level == "over":
             game_over_text = game_over_font.render(f"Game Over", True, (255, 10, 10))
             screen.blit(game_over_text, (screen.get_width() / 2 - game_over_text.get_width() / 2,
