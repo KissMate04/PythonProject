@@ -6,7 +6,7 @@ import projectile
 
 
 class Player(ship.Ship):
-    def __init__(self, screen, image, max_health, base_damage, speed, x, y, score):
+    def __init__(self, screen, image, max_health, base_damage, speed, x, y):
         super().__init__(screen, image, max_health, base_damage, speed, x, y)
         self.cooldown = 0
 
@@ -15,9 +15,12 @@ class Player(ship.Ship):
             self.shipsize += 16
         if eventy == -1 and self.shipsize > 32:
             self.shipsize -= 16
+        #Pylint is wrong here
+        #pylint: disable=attribute-defined-outside-init
         self.damage = self.base_damage * (self.shipsize / 100)
         self.image = pygame.transform.scale(self.image, (self.shipsize, self.shipsize))
         self.hitbox = pygame.Rect(self.x, self.y, self.image.get_width(), self.image.get_height())
+        #pylint: enable=attribute-defined-outside-init
 
     def move(self, keys, delta_time):
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:

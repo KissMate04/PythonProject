@@ -12,13 +12,13 @@ def main():
     menu_font = pygame.font.SysFont('Futura', 100)
     p = player.Player(screen, 'sprites\\startership.png', game.PLAYER_MAX_HEALTH,
                       game.PLAYER_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() / 2 - 16,
-                      screen.get_height() - screen.get_height() / 4, 0)
+                      screen.get_height() - screen.get_height() / 4)
 
     def reset():
         nonlocal p
         p = player.Player(screen, 'sprites\\startership.png', game.PLAYER_MAX_HEALTH,
                           game.PLAYER_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() / 2 - 16,
-                          screen.get_height() - screen.get_height() / 4, 0)
+                          screen.get_height() - screen.get_height() / 4)
         game.level = "level1"
         game.score = 0
 

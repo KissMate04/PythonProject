@@ -1,8 +1,9 @@
-#pylint: disable=import-error, no-member, attribute-defined-outside-init
+# pylint: disable=import-error, no-member, attribute-defined-outside-init
 import pygame
 import ship
 import game
 import projectile
+
 
 class Enemy(ship.Ship):
     def __init__(self, screen, image, max_health, base_damage, speed, x, y):
@@ -20,7 +21,8 @@ class Enemy(ship.Ship):
 
         self.x += self.speed * delta_time * self.xdirection
         self.y += self.speed * delta_time * self.ydirection
-        if self.x >= self.screen.get_width() - self.image.get_width() - 50 and self.ydirection == 0:
+        if (self.x >= self.screen.get_width() - self.image.get_width() - 50
+                and self.ydirection == 0):
             self.xdirection = 0
             self.ydirection = 1
         elif self.y >= 300 and self.xdirection in (0,1):
