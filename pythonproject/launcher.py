@@ -3,7 +3,8 @@ import os
 import sys
 import subprocess
 
-#A laucher egy részében Claude segített
+# A laucher egy részében Claude segített
+
 
 def main():
     # Get the package directory

@@ -1,4 +1,4 @@
-#pylint: disable=import-error, no-member
+# pylint: disable=import-error, no-member
 import pygame
 import ship
 import game
@@ -15,12 +15,17 @@ class Player(ship.Ship):
             self.shipsize += 16
         if eventy == -1 and self.shipsize > 32:
             self.shipsize -= 16
-        #Pylint is wrong here
-        #pylint: disable=attribute-defined-outside-init
+        # Pylint is wrong here
+        # pylint: disable=attribute-defined-outside-init
         self.damage = self.base_damage * (self.shipsize / 100)
-        self.image = pygame.transform.scale(self.image, (self.shipsize, self.shipsize))
-        self.hitbox = pygame.Rect(self.x, self.y, self.image.get_width(), self.image.get_height())
-        #pylint: enable=attribute-defined-outside-init
+        self.image = pygame.transform.scale(
+            self.image, (self.shipsize, self.shipsize))
+        self.hitbox = pygame.Rect(
+            self.x,
+            self.y,
+            self.image.get_width(),
+            self.image.get_height())
+        # pylint: enable=attribute-defined-outside-init
 
     def move(self, keys, delta_time):
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
@@ -33,7 +38,7 @@ class Player(ship.Ship):
             self.y += self.speed * delta_time
         super().move(keys, delta_time)
 
-    def hit(self,damage_taken):
+    def hit(self, damage_taken):
         print("remaining health: ", self.health)
         super().hit(damage_taken)
 
@@ -42,7 +47,7 @@ class Player(ship.Ship):
         game.game_over()
 
     def shoot(self):
-        if pygame.time.get_ticks() - self.cooldown > 110+self.shipsize*1.65:
+        if pygame.time.get_ticks() - self.cooldown > 110 + self.shipsize * 1.65:
             self.cooldown = pygame.time.get_ticks()
             game.projectiles.append(
                 projectile.Projectile(

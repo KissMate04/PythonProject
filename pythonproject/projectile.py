@@ -10,8 +10,8 @@ class Projectile:
         self.damage = damage
         self.hitbox = pygame.Rect(
             self.x,
-            self.y-self.size*1.5,
-            min(self.size/4, 15),
+            self.y - self.size * 1.5,
+            min(self.size / 4, 15),
             min(self.size, 40)
         )
         self.shooter = shooter
@@ -23,8 +23,8 @@ class Projectile:
             self.y += self.speed
         self.hitbox = pygame.Rect(
             self.x,
-            self.y-self.size*1.5,
-            min(self.size/4,15),
+            self.y - self.size * 1.5,
+            min(self.size / 4, 15),
             min(self.size, 40)
         )
 
