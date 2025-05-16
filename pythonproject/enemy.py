@@ -1,4 +1,5 @@
 # pylint: disable=import-error, no-member, attribute-defined-outside-init
+import os
 import pygame
 import ship
 import game
@@ -40,7 +41,7 @@ class Enemy(ship.Ship):
     def death(self):
         if not self.dying:
             self.image = pygame.image.load(
-                'sprites\\explosion.png').convert_alpha()
+                os.path.join('sprites', 'explosion.png')).convert_alpha()
             self.image = pygame.transform.scale(
                 self.image, (self.shipsize, self.shipsize))
 

@@ -1,4 +1,6 @@
 # pylint : disable=import-error, no-member
+import os
+
 import pygame
 
 
@@ -6,7 +8,7 @@ class Ship:
     def __init__(self, screen, image, max_health, base_damage, speed, x, y):
         self.screen = screen
         self.shipsize = 32
-        self.image = pygame.image.load(image).convert_alpha()
+        self.image = pygame.image.load(os.path.join('sprites', image)).convert_alpha()
         self.image = pygame.transform.scale(
             self.image, (self.shipsize, self.shipsize))
         self.max_health = max_health

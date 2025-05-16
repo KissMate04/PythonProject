@@ -13,7 +13,7 @@ def main():
     menu_font = pygame.font.SysFont('Futura', 100)
     p = player.Player(
         screen,
-        'sprites\\startership.png',
+        'startership.png',
         game.PLAYER_MAX_HEALTH,
         game.PLAYER_BASE_DAMAGE,
         game.PLAYER_SPEED,
@@ -28,7 +28,7 @@ def main():
         nonlocal p
         p = player.Player(
             screen,
-            'sprites\\startership.png',
+            'startership.png',
             game.PLAYER_MAX_HEALTH,
             game.PLAYER_BASE_DAMAGE,
             game.PLAYER_SPEED,
@@ -116,7 +116,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship1.png',
+                    'enemyship1.png',
                     game.ENEMY_MAX_HEALTH,
                     game.ENEMY_BASE_DAMAGE,
                     game.ENEMY_SPEED,
@@ -125,7 +125,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship1.png',
+                    'enemyship1.png',
                     game.ENEMY_MAX_HEALTH,
                     game.ENEMY_BASE_DAMAGE,
                     game.ENEMY_SPEED,
@@ -141,7 +141,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship1.png',
+                    'enemyship1.png',
                     game.ENEMY_MAX_HEALTH,
                     game.ENEMY_BASE_DAMAGE,
                     game.ENEMY_SPEED,
@@ -150,7 +150,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship1.png',
+                    'enemyship1.png',
                     game.ENEMY_MAX_HEALTH,
                     game.ENEMY_BASE_DAMAGE,
                     game.ENEMY_SPEED,
@@ -159,7 +159,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship1.png',
+                    'enemyship1.png',
                     game.ENEMY_MAX_HEALTH,
                     game.ENEMY_BASE_DAMAGE,
                     game.ENEMY_SPEED,
@@ -168,7 +168,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship1.png',
+                    'enemyship1.png',
                     game.ENEMY_MAX_HEALTH,
                     game.ENEMY_BASE_DAMAGE,
                     game.ENEMY_SPEED,
@@ -177,7 +177,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship1.png',
+                    'enemyship1.png',
                     game.ENEMY_MAX_HEALTH,
                     game.ENEMY_BASE_DAMAGE,
                     game.ENEMY_SPEED,
@@ -186,7 +186,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship1.png',
+                    'enemyship1.png',
                     game.ENEMY_MAX_HEALTH,
                     game.ENEMY_BASE_DAMAGE,
                     game.ENEMY_SPEED,
@@ -203,7 +203,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship2.png',
+                    'enemyship2.png',
                     game.ENEMY_MAX_HEALTH * 2,
                     game.ENEMY_BASE_DAMAGE * 3,
                     game.ENEMY_SPEED * 1.25,
@@ -212,7 +212,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship2.png',
+                    'enemyship2.png',
                     game.ENEMY_MAX_HEALTH * 2,
                     game.ENEMY_BASE_DAMAGE * 3,
                     game.ENEMY_SPEED * 1.25,
@@ -221,7 +221,7 @@ def main():
             game.enemies.append(
                 enemy.Enemy(
                     screen,
-                    'sprites\\enemyship2.png',
+                    'enemyship2.png',
                     game.ENEMY_MAX_HEALTH * 2,
                     game.ENEMY_BASE_DAMAGE * 3,
                     game.ENEMY_SPEED * 1.25,
@@ -301,12 +301,6 @@ def main():
             en.move(keys, delta_time)
             screen.blit(en.image, (en.x, en.y))
 
-        if game.level == "level1":
-            level1()
-        if game.level == "level2":
-            level2()
-        if game.level == "level3":
-            level3()
         if game.level == "over":
             game_over_text = game_over_font.render(
                 "Game Over", True, (255, 10, 10))
@@ -320,6 +314,12 @@ def main():
             reset()
         if game.in_menu:
             menu()
+        elif game.level == "level1":
+            level1()
+        elif game.level == "level2":
+            level2()
+        elif game.level == "level3":
+            level3()
 
     font = pygame.font.SysFont('Futura', 20)
     game_over_font = pygame.font.SysFont('Rocket', 50)
