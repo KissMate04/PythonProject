@@ -4,7 +4,7 @@ import pygame
 import player
 import enemy
 import game
-
+import boss
 
 def main():
     pygame.init()
@@ -199,9 +199,8 @@ def main():
 
     def level3():
         if not game.enemies:
-            # replace with boss class
             game.enemies.append(
-                enemy.Enemy(
+                boss.Boss(
                     screen,
                     'enemyship2.png',
                     game.ENEMY_MAX_HEALTH * 2,
@@ -210,7 +209,7 @@ def main():
                     screen.get_width() / 2,
                     100))
             game.enemies.append(
-                enemy.Enemy(
+                boss.Boss(
                     screen,
                     'enemyship2.png',
                     game.ENEMY_MAX_HEALTH * 2,
@@ -219,7 +218,7 @@ def main():
                     screen.get_width() - 50,
                     300))
             game.enemies.append(
-                enemy.Enemy(
+                boss.Boss(
                     screen,
                     'enemyship2.png',
                     game.ENEMY_MAX_HEALTH * 2,
