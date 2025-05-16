@@ -1,3 +1,4 @@
+#pylint: disable=import-error, no-member
 import pygame
 
 pygame.init()
@@ -34,4 +35,3 @@ def game_over():
     projectiles.clear()
     global level
     level = "over"
-

@@ -1,3 +1,4 @@
+#pylint: disable=import-error, no-member
 import pygame
 import ship
 import game
@@ -40,4 +41,11 @@ class Player(ship.Ship):
     def shoot(self):
         if pygame.time.get_ticks() - self.cooldown > 110+self.shipsize*1.65:
             self.cooldown = pygame.time.get_ticks()
-            game.projectiles.append(projectile.Projectile(self.x + self.shipsize / 2, self.y, self.shipsize / 2, game.PROJECTILE_SPEED,self.damage, "player"))
+            game.projectiles.append(
+                projectile.Projectile(
+                    self.x + self.shipsize / 2,
+                    self.y, self.shipsize / 2,
+                    game.PROJECTILE_SPEED,
+                    self.damage,
+                    "player")
+            )

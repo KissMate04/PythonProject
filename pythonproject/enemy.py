@@ -1,3 +1,4 @@
+#pylint: disable=import-error, no-member, attribute-defined-outside-init
 import pygame
 import ship
 import game
@@ -22,7 +23,7 @@ class Enemy(ship.Ship):
         if self.x >= self.screen.get_width() - self.image.get_width() - 50 and self.ydirection == 0:
             self.xdirection = 0
             self.ydirection = 1
-        elif self.y >= 300 and (self.xdirection == 0 or self.xdirection == 1):
+        elif self.y >= 300 and self.xdirection in (0,1):
             self.xdirection = -1
             self.ydirection = 0
         elif self.x <= 50 and self.ydirection == 0:
@@ -55,6 +56,5 @@ class Enemy(ship.Ship):
         if self.dying:
             return
         game.projectiles.append(
-            projectile.Projectile(self.x + self.shipsize / 2, self.y + self.shipsize, self.shipsize / 2, game.PROJECTILE_SPEED,
-                                  self.damage, self))
-
+            projectile.Projectile(self.x + self.shipsize / 2, self.y + self.shipsize,
+                                  self.shipsize / 2,game.PROJECTILE_SPEED, self.damage, self))

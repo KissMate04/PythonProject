@@ -1,38 +1,55 @@
+#pylint: disable=import-error, no-member
+import sys
 import pygame
 import player
 import enemy
 import game
-from pythonproject.game import LEVEL1_TARGET_SCORE
-
 
 def main():
     pygame.init()
     pygame.font.init()
     screen = pygame.display.set_mode((600, 800), pygame.SCALED)
     menu_font = pygame.font.SysFont('Futura', 100)
-    p = player.Player(screen, 'sprites\\startership.png', game.PLAYER_MAX_HEALTH, game.PLAYER_BASE_DAMAGE,
-                      game.PLAYER_SPEED, screen.get_width() / 2 - 16,
+    p = player.Player(screen, 'sprites\\startership.png', game.PLAYER_MAX_HEALTH,
+                      game.PLAYER_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() / 2 - 16,
                       screen.get_height() - screen.get_height() / 4, 0)
 
     def reset():
         nonlocal p
-        p = player.Player(screen, 'sprites\\startership.png', game.PLAYER_MAX_HEALTH, game.PLAYER_BASE_DAMAGE,
-                          game.PLAYER_SPEED, screen.get_width() / 2 - 16,
+        p = player.Player(screen, 'sprites\\startership.png', game.PLAYER_MAX_HEALTH,
+                          game.PLAYER_BASE_DAMAGE, game.PLAYER_SPEED, screen.get_width() / 2 - 16,
                           screen.get_height() - screen.get_height() / 4, 0)
         game.level = "level1"
         game.score = 0
 
     def menu():
-        start_cont_btn = pygame.draw.rect(screen, (0,0,0), (screen.get_width()/2 - 100, screen.get_height()/3 - 50, 200, 100))
+        start_cont_btn = pygame.draw.rect(
+            screen,
+            (0,0,0),
+            (screen.get_width()/2 - 100, screen.get_height()/3 - 50, 200, 100)
+        )
         if game.score == 0:
             start_cont_text = menu_font.render("Start", True, (255, 255, 255))
         else:
             start_cont_text = menu_font.render("Continue", True, (255, 255, 255))
-        screen.blit(start_cont_text, (screen.get_width()/2 - start_cont_text.get_width()/2, screen.get_height()/3 - start_cont_text.get_height()/2))
+        screen.blit(
+            start_cont_text,
+            (screen.get_width()/2 - start_cont_text.get_width()/2,
+             screen.get_height()/3 - start_cont_text.get_height()/2)
+        )
 
-        quit_btn = pygame.draw.rect(screen, (0, 0, 0),(screen.get_width() / 2 - 100, screen.get_height() - screen.get_height() / 3 - 50, 200, 100))
+        quit_btn = pygame.draw.rect(
+            screen,
+            (0, 0, 0),
+            (screen.get_width() / 2 - 100,
+             screen.get_height() - screen.get_height() / 3 - 50, 200, 100)
+        )
         quit_text = menu_font.render("Quit", True, (255, 255, 255))
-        screen.blit(quit_text,(screen.get_width() / 2 - quit_text.get_width() / 2, screen.get_height() - screen.get_height() / 3 - start_cont_text.get_height() / 2))
+        screen.blit(
+            quit_text,
+            (screen.get_width() / 2 - quit_text.get_width() / 2,
+             screen.get_height() - screen.get_height() / 3 - start_cont_text.get_height() / 2)
+        )
 
         #Gombnyomás: https://www.youtube.com/watch?v=Y52JsDs4cMQ
         if start_cont_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
@@ -40,17 +57,17 @@ def main():
 
         if quit_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             pygame.quit()
-            exit()
+            sys.exit()
 
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
                 pygame.quit()
-                exit()
+                sys.exit()
 
 
 
     def info(max_health, health, level, score):
-        health_text = font.render(f"Health: {str(health)}/{str(max_health)}", True, (255, 255, 255))
+        health_text = font.render(f"Health: {str(health)}/{str(max_health)}",True,(255, 255, 255))
         score_text = font.render(f"Score: {str(score)}", True, (255, 255, 255))
         level_text = ""
         if level == "level1":
@@ -67,10 +84,12 @@ def main():
     def level1():
         if not game.enemies:
             game.enemies.append(
-                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
+                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH,
+                            game.ENEMY_BASE_DAMAGE,
                             game.ENEMY_SPEED, screen.get_width() / 2, 100))
             game.enemies.append(
-                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
+                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH,
+                            game.ENEMY_BASE_DAMAGE,
                             game.ENEMY_SPEED, screen.get_width() / 2, 300))
         if game.score >= game.LEVEL1_TARGET_SCORE:
             game.enemies.clear()
@@ -80,22 +99,28 @@ def main():
     def level2():
         if not game.enemies:
             game.enemies.append(
-                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
+                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH,
+                            game.ENEMY_BASE_DAMAGE,
                             game.ENEMY_SPEED, screen.get_width() - 50, 100))
             game.enemies.append(
-                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
+                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH,
+                            game.ENEMY_BASE_DAMAGE,
                             game.ENEMY_SPEED, screen.get_width() - 50, 300))
             game.enemies.append(
-                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
+                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH,
+                            game.ENEMY_BASE_DAMAGE,
                             game.ENEMY_SPEED, screen.get_width() / 2, 300))
             game.enemies.append(
-                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
+                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH,
+                            game.ENEMY_BASE_DAMAGE,
                             game.ENEMY_SPEED, 50, 300))
             game.enemies.append(
-                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
+                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH,
+                            game.ENEMY_BASE_DAMAGE,
                             game.ENEMY_SPEED, 50, 100))
             game.enemies.append(
-                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH, game.ENEMY_BASE_DAMAGE,
+                enemy.Enemy(screen, 'sprites\\enemyship1.png', game.ENEMY_MAX_HEALTH,
+                            game.ENEMY_BASE_DAMAGE,
                             game.ENEMY_SPEED, screen.get_width() / 2, 100))
         if game.score >= game.LEVEL2_TARGET_SCORE:
             game.enemies.clear()
@@ -104,6 +129,7 @@ def main():
 
     def level3():
         if not game.enemies:
+            #replace with boss class
             game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship2.png', game.ENEMY_MAX_HEALTH*2, game.ENEMY_BASE_DAMAGE*3,game.ENEMY_SPEED*1.25, screen.get_width() / 2, 100))
             game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship2.png', game.ENEMY_MAX_HEALTH*2, game.ENEMY_BASE_DAMAGE*3,game.ENEMY_SPEED*1.25, screen.get_width() -50, 300))
             game.enemies.append(enemy.Enemy(screen, 'sprites\\enemyship2.png', game.ENEMY_MAX_HEALTH*2, game.ENEMY_BASE_DAMAGE*3,game.ENEMY_SPEED*1.25, 50, 300))
@@ -119,16 +145,17 @@ def main():
                 p.resize(event.y)
             if event.type == pygame.QUIT:
                 game.running = False
-            if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or (
-                    event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
+            if ((event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or
+                    (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE)):
                 p.shoot()
             if event.type == game.ENEMY_SHOOT:
                 for en in game.enemies:
                     en.shoot()
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[
-            pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
+        if any(keys[key] for key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP,
+                                     pygame.K_DOWN, pygame.K_w, pygame.K_a,
+                                     pygame.K_s, pygame.K_d]):
             p.move(keys, delta_time)
         if keys[pygame.K_ESCAPE]:
             game.in_menu = True
@@ -173,9 +200,11 @@ def main():
         if game.level == "level3":
             level3()
         if game.level == "over":
-            game_over_text = game_over_font.render(f"Game Over", True, (255, 10, 10))
-            screen.blit(game_over_text, (screen.get_width() / 2 - game_over_text.get_width() / 2,
-                                         screen.get_height() / 2 - game_over_text.get_height() / 2))
+            game_over_text = game_over_font.render("Game Over", True, (255, 10, 10))
+            screen.blit(
+                game_over_text,
+                (screen.get_width() / 2 - game_over_text.get_width() / 2,
+                 screen.get_height() / 2 - game_over_text.get_height() / 2))
             pygame.display.flip()
             pygame.time.delay(2000)
             game.in_menu = True
