@@ -1,4 +1,7 @@
 # pylint: disable=import-error, no-member
+"""
+Contains the game loop, levels and the menu.
+"""
 import sys
 import pygame
 import player
@@ -7,6 +10,9 @@ import game
 import boss
 
 def main():
+    """
+    Initializes the game, creates player and starts the game loop.
+    """
     pygame.init()
     pygame.font.init()
     screen = pygame.display.set_mode((600, 800), pygame.SCALED)
@@ -25,6 +31,9 @@ def main():
         4)
 
     def reset():
+        """"
+        Resets the score, level and player
+        """
         nonlocal p
         p = player.Player(
             screen,
@@ -38,6 +47,10 @@ def main():
         game.score = 0
 
     def menu():
+        """"
+        Displays menu with start/continue and quit buttons
+        The game is stopped while here
+        """
         start_cont_btn = pygame.draw.rect(
             screen,
             (0, 0, 0),
@@ -89,6 +102,14 @@ def main():
                 sys.exit()
 
     def info(max_health, health, level, score):
+        """
+        displays health, current level and score on top of the screen
+
+        :param max_health: player's max health
+        :param health: player's current health
+        :param level: current level
+        :param score: current score
+        """
         health_text = font.render(
             f"Health: {str(health)}/{str(max_health)}", True, (255, 255, 255))
         score_text = font.render(
@@ -112,6 +133,11 @@ def main():
                         2 - level_text.get_width() / 2, 10))
 
     def level1():
+        """
+        Level 1 of the game
+        Continuously creates 2 enemies untill target score is reached
+        Deletes enemies and projectiles and sets level to 2 once target is reached
+        """
         if not game.enemies:
             game.enemies.append(
                 enemy.Enemy(
@@ -137,6 +163,11 @@ def main():
             game.level = "level2"
 
     def level2():
+        """
+        Level 2 of the game
+        Continuously creates 6 enemies untill target score is reached
+        Deletes enemies and projectiles and sets level to 3 once target is reached
+        """
         if not game.enemies:
             game.enemies.append(
                 enemy.Enemy(
@@ -198,6 +229,11 @@ def main():
             game.level = "level3"
 
     def level3():
+        """
+        Level 3 of the game
+        Continuously creates 3 boss type enemies untill target score is reached
+        calls game_over once target is reached
+        """
         if not game.enemies:
             game.enemies.append(
                 boss.Boss(
@@ -232,19 +268,29 @@ def main():
             game.game_over()
 
     def play():
+        """
+        Handle the main gameplay loop.
+
+        Processes user input, updates game objects, handles collisions,
+        and displays the appropriate game state (levels, game over).
+        """
         info(p.max_health, p.health, game.level, game.score)
         for event in pygame.event.get():
+            # Resizing player with mousewheel
             if event.type == pygame.MOUSEWHEEL:
                 p.resize(event.y)
             if event.type == pygame.QUIT:
                 game.running = False
+            # Player shooting with left mouse click or space
             if ((event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or (
                     event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE)):
                 p.shoot()
+            # Enemy shooting automatically
             if event.type == game.ENEMY_SHOOT:
                 for en in game.enemies:
                     en.shoot()
 
+        # Player movement and exiting the menu with keyboard
         keys = pygame.key.get_pressed()
         if any(
             keys[key] for key in [
@@ -256,7 +302,7 @@ def main():
                 pygame.K_a,
                 pygame.K_s,
                 pygame.K_d]):
-            p.move(keys, delta_time)
+            p.move(keys)
         if keys[pygame.K_ESCAPE]:
             game.in_menu = True
 
@@ -264,12 +310,15 @@ def main():
             proj.move()
             proj.draw(screen)
 
+            # Check projectile for collision with enemies
+            # if hit then add 5 points to score, print message with damage info,
+            # remove projectile and damage the enemy
             if proj.shooter == "player":
                 for en in game.enemies[:]:
                     if proj.hitbox.colliderect(en.hitbox):
                         if not en.dying:
                             print(
-                                "Player projectile hit an enemy with: ",
+                                "Player an enemy with: ",
                                 proj.damage,
                                 " damage!")
                             game.score += 5
@@ -279,9 +328,11 @@ def main():
                         break
 
             else:
+                # Check projectile for collision with player
+                # if hit damage the player, remove projectile and print damage info
                 if proj.hitbox.colliderect(p.hitbox):
                     print(
-                        "Enemy projectile hit the player with: ",
+                        "Enemy the player with: ",
                         proj.damage,
                         " damage!")
                     p.hit(proj.damage)
@@ -297,9 +348,11 @@ def main():
         screen.blit(p.image, (p.x, p.y))
 
         for en in game.enemies[:]:
-            en.move(keys, delta_time)
+            en.move(keys)
             screen.blit(en.image, (en.x, en.y))
 
+        # If the game is over display Game Over, wait 2 second then call reset and
+        # put player in the menu
         if game.level == "over":
             game_over_text = game_over_font.render(
                 "Game Over", True, (255, 10, 10))
@@ -324,7 +377,7 @@ def main():
     game_over_font = pygame.font.SysFont('Rocket', 50)
 
     clock = pygame.time.Clock()
-    delta_time = 0.8
+
 
     while game.running:
         screen.fill((0, 0, 0))

@@ -1,11 +1,33 @@
 # pylint : disable=import-error, no-member
-import os
+"""
+Module containing the base Ship class for the game.
 
+All player and enemy ships inherit from this base class.
+"""
+import os
 import pygame
 
 
 class Ship:
+    """
+    Base class for all ships in the game.
+
+    Provides common functionality for player and enemy ships,
+    including movement, health management, and collision detection.
+    """
     def __init__(self, screen, image, max_health, base_damage, speed, x, y):
+        """
+        Initialize a Ship with given parameters.
+
+        Args:
+            screen: The pygame surface to draw on
+            image: The filename of the ship's sprite image
+            max_health: Maximum health of the ship
+            base_damage: Base damage the ship deals
+            speed: Movement speed of the ship
+            x: spawn coordinate: x
+            y: spawn coordinate: y
+        """
         self.screen = screen
         self.shipsize = 32
         self.image = pygame.image.load(os.path.join('sprites', image)).convert_alpha()
@@ -24,7 +46,15 @@ class Ship:
             self.image.get_width(),
             self.image.get_height())
 
-    def move(self, keys, delta_time):  # pylint: disable=unused-argument
+    def move(self, keys):  # pylint: disable=unused-argument
+        """
+        Base movement method for ships.
+
+        Updates the hitbox position and keeps the ship within screen bounds.
+
+        Args:
+            keys: Keyboard state (used by subclasses)
+        """
         self.hitbox = pygame.Rect(
             self.x,
             self.y,
@@ -37,9 +67,20 @@ class Ship:
         self.screen.blit(self.image, (self.x, self.y))
 
     def hit(self, damage_taken):
+        """
+        Handle the ship being hit by a projectile.
+
+        Reduces health by the damage amount and triggers death if health <= 0.
+
+        Args:
+            damage_taken: Amount of damage to subtract from health
+        """
         self.health -= round(damage_taken)
         if self.health <= 0:
             self.death()
 
     def death(self):
+        """
+        Handles ship's death
+        """
         pass
