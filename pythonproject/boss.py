@@ -10,14 +10,15 @@ import game
 import ship
 
 
-
 class Boss(enemy.Enemy):
     """
     Boss enemy class that inherits from Enemy.
 
-    Bosses have different movement patterns and more health/damage than regular enemies.
+    Bosses have different movement patterns
+    and more health/damage than regular enemies.
     They can move in any direction and change direction randomly or when hit.
     """
+
     def __init__(self, screen, image, max_health, base_damage, speed, x, y):
         """
         Initialize the Boss with given parameters.
@@ -59,7 +60,8 @@ class Boss(enemy.Enemy):
             self.ydirection = 1
 
         # Random chance to direction (1% by default)
-        if random.random() < game.CHANCE_OF_DIRECTION_CHANGE and not self.dying:
+        if (random.random() < game.CHANCE_OF_DIRECTION_CHANGE
+                and not self.dying):
             self.change_direction()
 
         ship.Ship.move(self, keys)

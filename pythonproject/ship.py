@@ -15,6 +15,7 @@ class Ship:
     Provides common functionality for player and enemy ships,
     including movement, health management, and collision detection.
     """
+
     def __init__(self, screen, image, max_health, base_damage, speed, x, y):
         """
         Initialize a Ship with given parameters.
@@ -30,7 +31,8 @@ class Ship:
         """
         self.screen = screen
         self.shipsize = 32
-        self.image = pygame.image.load(os.path.join('sprites', image)).convert_alpha()
+        self.image = pygame.image.load(
+            os.path.join('sprites', image)).convert_alpha()
         self.image = pygame.transform.scale(
             self.image, (self.shipsize, self.shipsize))
         self.max_health = max_health

@@ -9,6 +9,7 @@ import enemy
 import game
 import boss
 
+
 def main():
     """
     Initializes the game, creates player and starts the game loop.
@@ -329,7 +330,8 @@ def main():
 
             else:
                 # Check projectile for collision with player
-                # if hit damage the player, remove projectile and print damage info
+                # if hit damage the player, remove projectile and print damage
+                # info
                 if proj.hitbox.colliderect(p.hitbox):
                     print(
                         "Enemy the player with: ",
@@ -377,7 +379,6 @@ def main():
     game_over_font = pygame.font.SysFont('Rocket', 50)
 
     clock = pygame.time.Clock()
-
 
     while game.running:
         screen.fill((0, 0, 0))

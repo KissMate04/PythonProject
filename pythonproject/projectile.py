@@ -13,6 +13,7 @@ class Projectile:
     Projectiles move vertically and damage ships on collision.
     Their appearance and direction depend on who fired them.
     """
+
     def __init__(self, x, y, size, speed, damage, shooter):
         """
         Initialize a Projectile with given parameters.
