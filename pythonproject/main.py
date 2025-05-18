@@ -319,7 +319,7 @@ def main():
                     if proj.hitbox.colliderect(en.hitbox):
                         if not en.dying:
                             print(
-                                "Player an enemy with: ",
+                                "Player hit an enemy with: ",
                                 proj.damage,
                                 " damage!")
                             game.score += 5
@@ -333,12 +333,12 @@ def main():
                 # if hit damage the player, remove projectile and print damage
                 # info
                 if proj.hitbox.colliderect(p.hitbox):
-                    print(
-                        "Enemy the player with: ",
-                        proj.damage,
-                        " damage!")
                     p.hit(proj.damage)
                     proj.shooter.promotion()
+                    print(
+                        "Enemy hit the player with: ",
+                        proj.damage,
+                        " damage!")
                     if proj in game.projectiles:
                         game.projectiles.remove(proj)
 
