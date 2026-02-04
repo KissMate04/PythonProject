@@ -19,7 +19,7 @@ class Boss(enemy.Enemy):
     They can move in any direction and change direction randomly or when hit.
     """
 
-    def __init__(self, screen, image, max_health, base_damage, speed, x, y):
+    def __init__(self, image, max_health, base_damage, speed, x, y):
         """
         Initialize the Boss with given parameters.
 
@@ -32,9 +32,9 @@ class Boss(enemy.Enemy):
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        super().__init__(screen, image, max_health, base_damage, speed, x, y)
+        super().__init__(image, max_health, base_damage, speed, x, y)
 
-    def move(self, keys):
+    def move(self):
         """
         Move the boss according to its current direction.
 
@@ -48,8 +48,8 @@ class Boss(enemy.Enemy):
                 game.enemies.remove(self)
             return
 
-        self.x += self.speed * game.DELTA_TIME * self.xdirection
-        self.y += self.speed * game.DELTA_TIME * self.ydirection
+        self.x += self.speed * self.xdirection
+        self.y += self.speed * self.ydirection
         if self.x >= self.screen.get_width() - self.image.get_width() - 20:
             self.xdirection = -1
         elif self.x <= 20:
@@ -64,7 +64,7 @@ class Boss(enemy.Enemy):
                 and not self.dying):
             self.change_direction()
 
-        ship.Ship.move(self, keys)
+        ship.Ship.move(self)
 
     def change_direction(self):
         """

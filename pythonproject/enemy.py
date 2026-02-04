@@ -16,7 +16,7 @@ class Enemy(ship.Ship):
     Enemies follow a rectangular movement pattern, shoot at the player,
     and are upgraded (promoted) when they hit the player.
     """
-    def __init__(self, screen, image, max_health, base_damage, speed, x, y):
+    def __init__(self, image, max_health, base_damage, speed, x, y):
         """
         Initialize an Enemy with given parameters.
 
@@ -29,13 +29,14 @@ class Enemy(ship.Ship):
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        super().__init__(screen, image, max_health, base_damage, speed, x, y)
+        super().__init__(image, max_health, base_damage, speed, x, y)
+        self.alive = True
         self.xdirection = 1
         self.ydirection = 0
         self.dying = False
         self.time = 0
 
-    def move(self, keys):
+    def move(self, area):
         """
         Move the enemy ship according to a rectangular pattern.
 
@@ -44,26 +45,25 @@ class Enemy(ship.Ship):
         """
         if self.dying:
             if pygame.time.get_ticks() - self.time > 500:
-                game.enemies.remove(self)
+                self.alive = False
             return
 
-        self.x += self.speed * game.DELTA_TIME * self.xdirection
-        self.y += self.speed * game.DELTA_TIME * self.ydirection
-        if (self.x >= self.screen.get_width() - self.image.get_width() - 50
-                and self.ydirection == 0):
+        self.x += self.speed * self.xdirection
+        self.y += self.speed * self.ydirection
+        if (self.x >= area.left + area.width - self.image.get_width() - 50 and self.ydirection == 0):
             self.xdirection = 0
             self.ydirection = 1
         elif self.y >= 300 and self.xdirection in (0, 1):
             self.xdirection = -1
             self.ydirection = 0
-        elif self.x <= 50 and self.ydirection == 0:
+        elif self.x <= area.left + 50 and self.ydirection == 0:
             self.xdirection = 0
             self.ydirection = -1
-        elif self.y <= 50 and self.xdirection == 0:
+        elif self.y <= area.top + 30 and self.xdirection == 0:
             self.xdirection = 1
             self.ydirection = 0
 
-        super().move(keys)
+        super().move( area)
 
     def death(self):
         """
@@ -106,12 +106,6 @@ class Enemy(ship.Ship):
         Does nothing if the enemy is in the dying state.
         """
         if self.dying:
-            return
-        game.projectiles.append(
-            projectile.Projectile(
-                self.x + self.shipsize / 2,
-                self.y + self.shipsize,
-                self.shipsize / 2,
-                game.PROJECTILE_SPEED,
-                self.damage,
-                self))
+            return False
+        return True
+

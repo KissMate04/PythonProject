@@ -7,7 +7,7 @@ The player ship is controlled by keyboard input and can shoot projectiles.
 import pygame
 import ship
 import game
-import projectile
+
 
 
 class Player(ship.Ship):
@@ -17,7 +17,7 @@ class Player(ship.Ship):
     The player can move in all directions using keyboard controls,
     shoot projectiles, and resize their ship using the mouse wheel.
     """
-    def __init__(self, screen, image, max_health, base_damage, speed, x, y):
+    def __init__(self, image, max_health, base_damage, speed, x, y):
         """
         Initialize the Player with given parameters.
 
@@ -30,7 +30,7 @@ class Player(ship.Ship):
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        super().__init__(screen, image, max_health, base_damage, speed, x, y)
+        super().__init__(image, max_health, base_damage, speed, x, y)
         self.cooldown = 0
 
     def resize(self, eventy):
@@ -59,7 +59,7 @@ class Player(ship.Ship):
             self.image.get_height())
         # pylint: enable=attribute-defined-outside-init
 
-    def move(self, keys):
+    def move(self, area, keys):
         """
         Move the player based on keyboard input.
 
@@ -70,14 +70,14 @@ class Player(ship.Ship):
             keys: Keyboard state to determine which direction to move
         """
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.x -= self.speed * game.DELTA_TIME
+            self.x -= self.speed
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.x += self.speed * game.DELTA_TIME
+            self.x += self.speed
         if keys[pygame.K_UP] or keys[pygame.K_w]:
-            self.y -= self.speed * game.DELTA_TIME
+            self.y -= self.speed
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.y += self.speed * game.DELTA_TIME
-        super().move(keys)
+            self.y += self.speed
+        super().move(area)
 
     def hit(self, damage_taken):
         """
@@ -95,7 +95,7 @@ class Player(ship.Ship):
         Triggers game over when the player dies.
         """
         print("you have died.")
-        game.game_over()
+        pygame.event.post(pygame.event.Event(game.PLAYER_DEATH))
 
     def shoot(self):
         """
@@ -106,11 +106,5 @@ class Player(ship.Ship):
         """
         if pygame.time.get_ticks() - self.cooldown > 110 + self.shipsize * 1.65:
             self.cooldown = pygame.time.get_ticks()
-            game.projectiles.append(
-                projectile.Projectile(
-                    self.x + self.shipsize / 2,
-                    self.y, self.shipsize / 2,
-                    game.PROJECTILE_SPEED,
-                    self.damage,
-                    "player")
-            )
+            return True
+        return False

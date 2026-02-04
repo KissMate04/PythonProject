@@ -16,7 +16,7 @@ class Ship:
     including movement, health management, and collision detection.
     """
 
-    def __init__(self, screen, image, max_health, base_damage, speed, x, y):
+    def __init__(self, image, max_health, base_damage, speed, x, y):
         """
         Initialize a Ship with given parameters.
 
@@ -29,7 +29,6 @@ class Ship:
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        self.screen = screen
         self.shipsize = 32
         self.image = pygame.image.load(
             os.path.join('sprites', image)).convert_alpha()
@@ -48,7 +47,7 @@ class Ship:
             self.image.get_width(),
             self.image.get_height())
 
-    def move(self, keys):  # pylint: disable=unused-argument
+    def move(self, area):  # pylint: disable=unused-argument
         """
         Base movement method for ships.
 
@@ -62,11 +61,10 @@ class Ship:
             self.y,
             self.image.get_width(),
             self.image.get_height())
-        self.x = max(self.x, 0)
-        self.y = max(self.y, 0)
-        self.x = min(self.x, self.screen.get_width() - self.shipsize)
-        self.y = min(self.y, self.screen.get_height() - self.shipsize)
-        self.screen.blit(self.image, (self.x, self.y))
+        self.x = max(self.x, area.left)
+        self.y = max(self.y, area.top)
+        self.x = min(self.x, area.left + area.width - self.shipsize)
+        self.y = min(self.y, area.height - self.shipsize)
 
     def hit(self, damage_taken):
         """
