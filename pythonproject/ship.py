@@ -29,7 +29,7 @@ class Ship:
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        self.shipsize = 32
+        self.shipsize = 48
         self.image = pygame.image.load(
             os.path.join('sprites', image)).convert_alpha()
         self.image = pygame.transform.scale(

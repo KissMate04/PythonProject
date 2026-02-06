@@ -17,23 +17,23 @@ pygame.init()
 FPS = 60
 # enemy shooting cooldown
 ENEMY_SHOOT = pygame.USEREVENT + 1
-pygame.time.set_timer(ENEMY_SHOOT, 1000)
+pygame.time.set_timer(ENEMY_SHOOT, 800)
 # player
 PLAYER_MAX_HEALTH = 100
 PLAYER_SPEED = 4
-PLAYER_BASE_DAMAGE = 63
+PLAYER_BASE_DAMAGE = 53 # with 53 smallest size kills in 6 shots, biggest kills in 2 shots
 PLAYER_DEATH = pygame.USEREVENT + 2
 # enemy
 ENEMY_MAX_HEALTH = 100
-ENEMY_SPEED = 4
-ENEMY_BASE_DAMAGE = 20
+ENEMY_SPEED = 3.5
+ENEMY_BASE_DAMAGE = 30
 # boss
 BOSS_MAX_HEALTH = 200
 BOSS_SPEED = 5
 BOSS_BASE_DAMAGE = 60
 CHANCE_OF_DIRECTION_CHANGE = 0.01   # 0.01 = 1% chance
 # projectile
-PROJECTILE_SPEED = 4
+PROJECTILE_SPEED = 6
 # score to progress
 LEVEL1_TARGET_SCORE = 100
 LEVEL2_TARGET_SCORE = 500
@@ -105,11 +105,12 @@ class MainScreen:
         )
 
 class LevelScene:
-    def __init__(self, area, level, num):
+    def __init__(self, area, level, num, ship_panels):
         self.start_time = pygame.time.get_ticks()
         self.num = num # level number
         self.started = False # to show level start text only once
         self.area = area
+        self.ship_panels = ship_panels
         self.paused = False
         self.enemies = []
         for nx,ny in level:
@@ -275,9 +276,9 @@ class LevelScene:
             return
 
         screen.fill((50, 50, 50))
-        pygame.draw.rect(screen, (50, 50, 50), (0, 0, self.area.left, screen.get_height()))
-        pygame.draw.rect(screen, (20, 20, 20), self.area)
-        pygame.draw.rect(screen, (50, 50, 50),(self.area.left + self.area.width, 0, screen.get_width(), screen.get_height()))
+        screen.blit(self.ship_panels.left_panel, (0, 0))
+        screen.blit(self.ship_panels.area_panel, (self.area.left, 0))
+        screen.blit(self.ship_panels.right_panel, (self.area.left + self.area.width, 0))
         if not self.started:
             screen.blit(
                 self.level_text,
@@ -343,3 +344,5 @@ class GameOverScreen:
             (self.quit_btn.centerx - self.quit_text.get_width() // 2,
              self.quit_btn.centery - self.quit_text.get_height() // 2)
         )
+
+

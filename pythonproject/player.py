@@ -45,10 +45,8 @@ class Player(ship.Ship):
         """
         if eventy == 1 and self.shipsize < 176:
             self.shipsize += 16
-        if eventy == -1 and self.shipsize > 32:
+        if eventy == -1 and self.shipsize > 48:
             self.shipsize -= 16
-        # Pylint is wrong here
-        # pylint: disable=attribute-defined-outside-init
         self.damage = self.base_damage * (self.shipsize / 100)
         self.image = pygame.transform.scale(
             self.image, (self.shipsize, self.shipsize))
@@ -57,7 +55,7 @@ class Player(ship.Ship):
             self.y,
             self.image.get_width(),
             self.image.get_height())
-        # pylint: enable=attribute-defined-outside-init
+
 
     def move(self, area, keys):
         """
