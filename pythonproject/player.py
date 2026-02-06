@@ -75,6 +75,7 @@ class Player(ship.Ship):
             self.y -= self.speed
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.y += self.speed
+        self.y = max(self.y, area.top+300+self.shipsize)
         super().move(area)
 
     def hit(self, damage_taken):

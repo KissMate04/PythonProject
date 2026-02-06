@@ -135,7 +135,7 @@ class LevelScene:
         # level start text
         self.level_text = level_font.render(
             f"LEVEL {self.num}", True, (255, 10, 10))
-
+        pygame.mouse.set_visible(False)
     def add_enemy(self, nx,ny):
         x = self.area.left + nx * self.area.width
         y = self.area.top + ny * self.area.height
@@ -152,10 +152,12 @@ class LevelScene:
         for event in events:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self.paused = not self.paused
+                pygame.mouse.set_visible(self.paused)
             if event.type == PLAYER_DEATH:
                 return "over"
         if self.paused:
             if self.cont_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                pygame.mouse.set_visible(False)
                 self.paused = False
             if self.quit_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                 return "QUIT"
@@ -307,6 +309,7 @@ class GameOverScreen:
             (self.area.left + self.area.width // 2 - 100,
              self.area.height - self.area.height // 4 , 200, 100))
         self.quit_text = menu_font.render("Quit", True, (255, 255, 255))
+        pygame.mouse.set_visible(True)
 
     def handle_events(self, events):
         if self.menu_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
